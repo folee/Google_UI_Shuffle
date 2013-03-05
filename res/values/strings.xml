@@ -4,5 +4,7 @@
     <string name="app_name">Vibin Advanced UI Shuffle</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    
+    <string name="title">Google Plus Page!</string>
 
 </resources>

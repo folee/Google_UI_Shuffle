@@ -1,14 +1,132 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:orientation="vertical" >
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
         android:text="@string/hello_world" />
 
-</RelativeLayout>
+    <FrameLayout
+        android:id="@android:id/tabcontent"
+        android:layout_width="fill_parent"
+        android:layout_height="0.0dip"
+        android:layout_weight="1.0" >
+
+        <it.vibin.ui.shuffle.VerticalShuffleScrollView
+            android:id="@+id/vssv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/textViewCustomStyle"
+                    android:background="@drawable/custom_background"
+                    android:text="@string/title" />
+            </LinearLayout>
+        </it.vibin.ui.shuffle.VerticalShuffleScrollView>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/hello_world" />
+
+</LinearLayout>

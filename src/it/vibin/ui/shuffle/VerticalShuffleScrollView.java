@@ -1,6 +1,7 @@
 package it.vibin.ui.shuffle;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -9,24 +10,78 @@ import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class VerticalShuffleScrollView extends ScrollView {
-	private final String			TAG				= VerticalShuffleScrollView.class.getSimpleName();
+public class VerticalShuffleScrollView extends ScrollView implements ScrollHandlerInterface {
+	private final String			TAG					= VerticalShuffleScrollView.class.getSimpleName();
 
-	private int						currentScrollY	= 0;
-	private int						footHeight;
+	private ScrollerHandler			mScrollerHandler;
 	private OnScrollStopListener	listener;
 	private LinearLayout			childLayout;
 
-	private final static int		SCROLL_JUDGE	= 0;
+	private final int				SCROLL_STATE_CHECK	= 0;
 
+	private int						currentScrollY		= 0;
+	private int						footHeight;
 	// Sliding distance and coordinate
 	private float					xDistance, yDistance, xLast, yLast;
 	private int						scrollYLast;
-
-	private boolean					flag			= false;
+	private boolean					flag				= false;
 
 	public VerticalShuffleScrollView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init();
+	}
+
+	private void init() {
+		mScrollerHandler = new ScrollerHandler(this, true);
+	}
+	
+	@Override
+	protected void onFinishInflate() {
+		super.onFinishInflate();
+		checkScrollView();
+	}
+	
+	private void checkScrollView(){
+		if (!LinearLayout.class.isInstance(getChildAt(0))) {
+			throw new IllegalArgumentException(
+					"This ScrollView must contains a LinearLayout!");
+		}
+	}
+
+	@Override
+	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+		super.onScrollChanged(l, t, oldl, oldt);
+
+		if (mScrollerHandler != null) {
+			mScrollerHandler.onScrollChange();
+		}
+	}
+
+	@Override
+	public void saveState(Bundle args) {
+		// delegate to scrollHandler object
+		if (mScrollerHandler != null) {
+			mScrollerHandler.saveState(args);
+		}
+
+	}
+
+	@Override
+	public void restoreState(Bundle args) {
+		// delegate to scrollHandler object
+		if (mScrollerHandler != null) {
+			mScrollerHandler.restoreState(args);
+		}
+
+	}
+
+	@Override
+	public boolean didAniamtionPlayedOnChild(int position) {
+		// delegate to scrollHandler object
+		if (mScrollerHandler != null) {
+			return mScrollerHandler.didAniamtionPlayedOnChild(position);
+		}
+		return false;
 	}
 
 	@Override
@@ -82,7 +137,7 @@ public class VerticalShuffleScrollView extends ScrollView {
 		case MotionEvent.ACTION_CANCEL:
 			currentScrollY = getScrollY();
 			Log.i(TAG, "current y: " + currentScrollY);
-			handler.sendEmptyMessageDelayed(SCROLL_JUDGE, 200);
+			handler.sendEmptyMessageDelayed(SCROLL_STATE_CHECK, 200);
 			break;
 		default:
 		}
@@ -102,12 +157,12 @@ public class VerticalShuffleScrollView extends ScrollView {
 							super.handleMessage(msg);
 
 							switch (msg.what) {
-							case SCROLL_JUDGE:
+							case SCROLL_STATE_CHECK:
 								if (currentScrollY != getScrollY()) {
 									currentScrollY = getScrollY();
 									// Log.i(TAG, "current y: " +
 									// currentScrollY);
-									handler.sendEmptyMessageDelayed(0, 200);
+									handler.sendEmptyMessageDelayed(SCROLL_STATE_CHECK, 200);
 								}
 								else {
 									int h = childLayout.getHeight() - (currentScrollY + getHeight());
@@ -116,7 +171,8 @@ public class VerticalShuffleScrollView extends ScrollView {
 										Log.e(TAG, "Already to the bottom, h=" + h);
 										listener.onMoveToBottom();
 										if (h < 0) {
-											VerticalShuffleScrollView.this.scrollTo(0, childLayout.getHeight() - getHeight());
+											VerticalShuffleScrollView.this.scrollTo(0, childLayout.getHeight()
+													- getHeight());
 										}
 									}
 									else {
