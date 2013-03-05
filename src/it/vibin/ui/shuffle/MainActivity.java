@@ -1,18 +1,25 @@
 package it.vibin.ui.shuffle;
 
-import it.vibin.ui.shuffle.VerticalShuffleScrollView.OnScrollStopListener;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.Menu;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class MainActivity extends Activity {
 	private VerticalShuffleScrollView	mScrollView;
-	private View						footerView;
+	private LinearLayout				llMain;
+	private LinearLayout				loading;
+
 	private TextView					title;
 	private TextView					bottom;
 	private int							guideHeight;
@@ -22,20 +29,33 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		llMain = (LinearLayout) findViewById(R.id.ll_main);
 		mScrollView = (VerticalShuffleScrollView) findViewById(R.id.vssv);
-		footerView = View.inflate(this, R.layout.refresh_footer, null);
+		loading = (LinearLayout) findViewById(R.id.loading);
+		loading.setVisibility(View.GONE);
+		final ObjectAnimator bojAnim = ObjectAnimator.ofFloat(loading, View.ALPHA, 0);
+		bojAnim.setDuration(4000);
+		bojAnim.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				loading.setVisibility(View.GONE);
+			}
+		});
 		title = (TextView) findViewById(R.id.title);
 		bottom = (TextView) findViewById(R.id.bottom);
 		guideHeight = (int) (50 * Util.getWindowDensity(this));
 
-		mScrollView.initData((int) (Util.getWindowDensity(this) * 50), new OnScrollStopListener() {
+		mScrollView.initData((int) (Util.getWindowDensity(this) * 50), new ScrollDetectorListener() {
 			@Override
 			public void onMoveToBottom() {
-				if (footerView != null && footerView.getVisibility() == View.VISIBLE) {
+				loading.setVisibility(View.VISIBLE);
+				if (loading.getVisibility() == View.VISIBLE) {
 					new Handler().postDelayed(new Runnable() {
 						@Override
-						public void run() {}
-					}, 100);
+						public void run() {
+							bojAnim.start();
+						}
+					}, 2000);
 				}
 			}
 
@@ -69,8 +89,7 @@ public class MainActivity extends Activity {
 		LayoutParams lp = (LayoutParams) title.getLayoutParams();
 		lp.topMargin = topMargin;
 		title.setLayoutParams(lp);
-		
-		
+
 		int bottomMargin = topMargin * 52 / 38;
 		LayoutParams lp2 = (LayoutParams) bottom.getLayoutParams();
 		lp2.bottomMargin = bottomMargin;

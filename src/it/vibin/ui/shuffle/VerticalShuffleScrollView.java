@@ -14,7 +14,7 @@ public class VerticalShuffleScrollView extends ScrollView implements ScrollHandl
 	private final String			TAG					= VerticalShuffleScrollView.class.getSimpleName();
 
 	private ScrollerHandler			mScrollerHandler;
-	private OnScrollStopListener	listener;
+	private ScrollDetectorListener	listener;
 	private LinearLayout			childLayout;
 
 	private final int				SCROLL_STATE_CHECK	= 0;
@@ -144,7 +144,7 @@ public class VerticalShuffleScrollView extends ScrollView implements ScrollHandl
 		return super.onTouchEvent(ev);
 	}
 
-	public void initData(int footHeight, OnScrollStopListener listener) {
+	public void initData(int footHeight, ScrollDetectorListener listener) {
 		this.footHeight = footHeight;
 		this.listener = listener;
 
@@ -187,11 +187,4 @@ public class VerticalShuffleScrollView extends ScrollView implements ScrollHandl
 						}
 					};
 
-	public interface OnScrollStopListener {
-		public void onMoveToBottom();
-
-		public void onHideGuideBar();
-
-		public void onShowGuideBar();
-	}
 }
