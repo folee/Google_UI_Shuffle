@@ -1,15 +1,19 @@
 package it.vibin.ui.shuffle;
 
+import it.vibin.ui.shuffle.google.ScrollTricksActivity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
@@ -18,7 +22,9 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 	private VerticalShuffleScrollView	mScrollView;
 	private LinearLayout				llMain;
-	private LinearLayout				loading;
+//	private LinearLayout				loading;
+//	private int							addPosition	= 3;
+	private LayoutInflater				inflater;
 
 	private TextView					title;
 	private TextView					bottom;
@@ -28,35 +34,54 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		this.inflater = LayoutInflater.from(this);
 		llMain = (LinearLayout) findViewById(R.id.ll_main);
 		mScrollView = (VerticalShuffleScrollView) findViewById(R.id.vssv);
-		loading = (LinearLayout) findViewById(R.id.loading);
-		loading.setVisibility(View.GONE);
-		final ObjectAnimator bojAnim = ObjectAnimator.ofFloat(loading, View.ALPHA, 0);
-		bojAnim.setDuration(4000);
-		bojAnim.addListener(new AnimatorListenerAdapter() {
+//		loading = (LinearLayout) findViewById(R.id.loading);
+//		loading.setVisibility(View.GONE);
+//		final ObjectAnimator bojAnim = ObjectAnimator.ofFloat(loading, View.ALPHA, 0);
+//		bojAnim.setDuration(4000);
+//		bojAnim.addListener(new AnimatorListenerAdapter() {
+//			@Override
+//			public void onAnimationEnd(Animator animation) {
+//				loading.setVisibility(View.GONE);
+//			}
+//		});
+		title = (TextView) findViewById(R.id.title);
+		
+		title.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onAnimationEnd(Animator animation) {
-				loading.setVisibility(View.GONE);
+			public void onClick(View v) {
+				startActivity(new Intent().setClass(MainActivity.this, ScrollTricksActivity.class));
 			}
 		});
-		title = (TextView) findViewById(R.id.title);
 		bottom = (TextView) findViewById(R.id.bottom);
 		guideHeight = (int) (50 * Util.getWindowDensity(this));
 
 		mScrollView.initData((int) (Util.getWindowDensity(this) * 50), new ScrollDetectorListener() {
 			@Override
 			public void onMoveToBottom() {
-				loading.setVisibility(View.VISIBLE);
-				if (loading.getVisibility() == View.VISIBLE) {
-					new Handler().postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							bojAnim.start();
-						}
-					}, 2000);
-				}
+//				loading.setVisibility(View.VISIBLE);
+//				if (loading.getVisibility() == View.VISIBLE) {
+//					new Handler().postDelayed(new Runnable() {
+//						@Override
+//						public void run() {
+//							bojAnim.start();
+//						}
+//					}, 2000);
+//				}
+				
+				TextView tvitem = (TextView) inflater.inflate(R.layout.tv_item, null);
+				int height = (int) (200 * Util.getWindowDensity(MainActivity.this));
+				int marginTop = (int) (30 * Util.getWindowDensity(MainActivity.this));
+				int marginLeft = (int) (30 * Util.getWindowDensity(MainActivity.this));
+				int marginRight = (int) (30 * Util.getWindowDensity(MainActivity.this));
+				LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+						height);
+				itemParams.setMargins( marginLeft, marginTop, marginRight, 0);
+				tvitem.setLayoutParams(itemParams);
+				llMain.addView(tvitem);
 			}
 
 			@Override

@@ -42,7 +42,7 @@ public class VerticalShuffleAdapter extends BaseAdapter {
 		ViewHolder holder;
 
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.episode_item, null);
+			convertView = inflater.inflate(R.layout.tv_item, null);
 			holder = new ViewHolder();
 			holder.tv_episode = (TextView) convertView.findViewById(R.id.tv_episode);
 			convertView.setTag(holder);
